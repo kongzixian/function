@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>index</title>
+    <link rel="stylesheet" type="text/css" href="plugins/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <style type="text/css">
+        .bigBox{border:1px solid #ccc;padding:10px;}
+        .boxItem{border:1px solid pink;}
+        .minHeight{height:300px;overflow-y:auto;border:1px solid blue;margin-top:15px;margin-bottom:10px; word-wrap:break-word;padding:5px;}
+        .baseBtn{min-width:100%;margin-top: 5px;}
+        .colorRed{color:red;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row bigBox">
+            <div class="col-md-6 boxItem">
+                <div class="btnBox">
+                    <button class="btn baseBtn" id="exchangeValueBtn">互换相应对象属性值开始</button>
+                </div>
+                <div class="showData minHeight" id="exchangeValue"></div>
+            </div>
+            <div class="col-md-6 boxItem">
+                <div class="btnBox">
+                    <button class="btn baseBtn" id="array2treeBtn">数组集合转成层级关系</button>
+                </div>
+                <div class="showData minHeight" id="array2treeValue"></div>
+            </div>
+            <div class="col-md-6 boxItem">
+                <div class="btnBox">
+                    <button class="btn baseBtn" id="arr2treeBtn2">(待修改)数组集合转成层级关系(每级以不同的字段筛选数据)</button>
+                </div>
+                <div class="showData minHeight" id="arr2treeValue2"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="plugins/requirejs/require.js"   data-main="plugins/requirejs/main.js"></script>
+    <script type="text/javascript">
+        require(['main'],function(){
+            require(['jquery','bootstrap','GlobalTools'],function($){
+                var globalTools=GlobalTools();
+                /******************************  公共函数开始  ***********************************/
+                    var baseFunObj={
+                        renderToDom:function(data,id,fn,opt){ // 第一个参数是数据 第二是Dom元素的id  第三个是工具函数中的函数 第四个是工具函数里面的opt
+                            var html='';
+                            if(opt === undefined){
+                                var newExchangeValObj = fn(data); 
+                            }else{
+                                var newExchangeValObj = fn(data,opt);
+                            }
+                            html+=JSON.stringify(data)+'<br /><br /><p class="colorRed">下面是转换后的数据</p><br />'+JSON.stringify(newExchangeValObj);
+                            $(id).html(html); 
+                        },
+                    };
+
+                /******************************  公共函数结束  ***********************************/
+
+
+                /******************************  互换相应对象属性值开始  ***********************************/
+                    $('#exchangeValueBtn').on('click',function(){
+                        getexchangeValUrl('json/exchangeVal.json');
+                    });
+                    function getexchangeValUrl(url){
+                        $.ajax({
+                            type: "GET",
+                            url: url,
+                            dataType:"json",
+                            async: true,
+                            contentType:"application/json",
+                            success: function(data){
+                                baseFunObj.renderToDom(data,'#exchangeValue',globalTools.exchangeValue,{name1:"name2",age1:"age2"});
+                            }
+                        });
+                    };
+                /******************************  互换相应对象属性值结束  ***********************************/
+
+                /******************************  数组集合转成层级关系开始 id parentId ***********************************/
+                    $('#array2treeBtn').on('click',function(){
+                        getArray2treeUrl('json/array2tree.json');
+                    });
+                    function getArray2treeUrl(url){
+                        $.ajax({
+                            type: "GET",
+                            url: url,
+                            dataType:"json",
+                            async: true,
+                            contentType:"application/json",
+                            success: function(data){
+                                baseFunObj.renderToDom(data,'#array2treeValue',globalTools.array2tree)
+                            }
+                        });
+                    };
+                  
+
+
+
+                /******************************  数组集合转成层级关系结束 id parentId ***********************************/
+
+                /***********************  数组集合转成层级关系(每级以不同的字段筛选数据)开始 ***************************/
+
+                    $('#arr2treeBtn2').on('click',function(){
+                        getArr2tree2Url('json/arr2tree2.json');
+                    });
+                    function getArr2tree2Url(url){
+                        $.ajax({
+                            type: "GET",
+                            url: url,
+                            dataType:"json",
+                            async: true,
+                            contentType:"application/json",
+                            success: function(res){
+                                var data=res.data
+                                // baseFunObj.renderToDom(data,'#arr2treeValue2',globalTools.arr2tree2)
+                            }
+                        });
+                    };
+
+
+                /***********************  数组集合转成层级关系(每级以不同的字段筛选数据)结束 ***************************/
+
+                /***********************  测试数组分组开始 ***************************/
+                    var needGroupArr=[
+                                    {ids:5,name:"kong1"},
+                                    {ids:3,name:"kong2"},
+                                    {ids:8,name:"kong3"},
+                                    {ids:5,name:"kong4"},
+                                    {ids:9,name:"kong5"},
+                                    {ids:3,name:"kong6"},
+                                    {ids:5,name:"kong7"},
+                                ]
+                    console.log(globalTools.arrayGroup(needGroupArr,'ids'))
+                /***********************  测试数组分组结束 ***************************/
+                
+                
+
+
+            })
+        })
+
+    </script>
+
+
+</body>
+</html>

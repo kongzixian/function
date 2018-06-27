@@ -1,0 +1,12 @@
+[  
+    {"id": 1,  "parentId": null, "name": "第一级菜单A" },  
+    {"id": 2,  "parentId": null, "name": "第一级菜单B" },  
+    {"id": 3,  "parentId": 1, "name": "第二级菜单A" },  
+    {"id": 4,  "parentId": 1, "name": "第二级菜单B" },  
+    {"id": 5,  "parentId": 3, "name": "第三级菜单A" },  
+    {"id": 6,  "parentId": 3, "name": "第三级菜单B" },  
+    {"id": 7,  "parentId": 4, "name": "第三级菜单C" },  
+    {"id": 8,  "parentId": 4, "name": "第三级菜单D" },  
+    {"id": 9,  "parentId": 2, "name": "第二级菜单C" },  
+    {"id": 10, "parentId": 2, "name": "第二级菜单D" }  
+]   
